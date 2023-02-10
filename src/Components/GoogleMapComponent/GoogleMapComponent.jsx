@@ -1,31 +1,34 @@
 import GoogleMapReact from "google-map-react";
 
 import { LocationPin } from "../LocationPin/LocationPin";
+import CityData from "../../Data/Poi.json";
 
 export const GoogleMapComponent = () => {
-  const defaultProps = {
-    center: {
-      lat: 10.99835602,
-      lng: 77.01502627,
-    },
-    zoom: 11,
-    address: "home",
-  };
+  const firstFive = CityData.features.slice(0, 20);
   return (
     <div className="map">
-      <h2 className="map-h2">Come Visit Us At Our Campus</h2>
+      <h2 className="map-h2">City Of Virginia Beach</h2>
 
       <div className="google-map">
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyAtM-jn7A0XVb_WPibPltWwRsAF2lUWOhw" }}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
+          center={{
+            lat: 36.86314,
+            lng: -76.015778,
+          }}
+          zoom={10}
+          yesIWantToUseGoogleMapApiInternals
         >
-          <LocationPin
-            lat={59.955413}
-            lng={30.337844}
-            text={defaultProps.address}
-          />
+          {firstFive.map((item) => {
+            return (
+              <LocationPin
+                key={item.properties["OBJECTID"]}
+                lat={item.geometry.coordinates[1]}
+                lng={item.geometry.coordinates[0]}
+                text={item.properties["NAME"]}
+              />
+            );
+          })}
         </GoogleMapReact>
       </div>
     </div>

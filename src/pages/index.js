@@ -8,13 +8,13 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <>
+    <div style={{ height: "100vh" }}>
       <Head>
         <title>City Project</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/vblogo.ico" />
       </Head>
       <TableComponent />
-    </>
+    </div>
   );
 }

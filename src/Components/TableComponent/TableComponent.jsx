@@ -28,13 +28,14 @@ export const TableComponent = () => {
         key: item.properties["OBJECTID"],
         name: item.properties["NAME"],
         typeCode: item.properties["TYPECODE"],
-        cityOwned: item.properties["CITYOWNED"],
+        cityOwned: item.properties["CITY_OWNED"],
         sVMap: item.properties["S_V_MAP"],
         webMap: item.properties["WEB_MAP"],
-        webLink: item.properties["WEB_LINK"],
+        webLink: item.properties["WEBLINK"],
         gPin: item.properties["GPIN"],
-        address: item.properties["ADDRESS"],
-        notes: item.properties["NOTES"],
+        address:
+          item.properties["ADDRESS"] != null ? item.properties["ADDRESS"] : "",
+        notes: item.properties["NOTES"] != null ? item.properties["NOTES"] : "",
         spX: item.properties["SP_X"],
         spY: item.properties["SP_Y"],
         latitude: item.properties["LATITUDE"],
@@ -161,7 +162,7 @@ export const TableComponent = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: 100,
+      width: 200,
       ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ["descend", "ascend"],
@@ -212,13 +213,13 @@ export const TableComponent = () => {
       title: "Web Link",
       dataIndex: "webLink",
       key: "webLink",
-      width: 100,
+      width: 300,
     },
     {
       title: "GPIN",
       dataIndex: "gPin",
       key: "gPin",
-      width: 100,
+      width: 200,
     },
     {
       title: "Address",
@@ -227,7 +228,7 @@ export const TableComponent = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 200,
     },
     {
       title: "Notes",
@@ -236,13 +237,13 @@ export const TableComponent = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.notes.length - b.notes.length,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 300,
     },
     {
       title: "SP_X",
       dataIndex: "spX",
       key: "spX",
-      sorter: (a, b) => a.spX.length - b.spX.length,
+      sorter: (a, b) => a.spX - b.spX,
       sortDirections: ["descend", "ascend"],
       width: 100,
     },
@@ -250,7 +251,7 @@ export const TableComponent = () => {
       title: "SP_Y",
       dataIndex: "spY",
       key: "spY",
-      sorter: (a, b) => a.spY.length - b.spY.length,
+      sorter: (a, b) => a.spY - b.spY,
       sortDirections: ["descend", "ascend"],
       width: 100,
     },
@@ -258,7 +259,7 @@ export const TableComponent = () => {
       title: "Latitude",
       dataIndex: "latitude",
       key: "latitude",
-      sorter: (a, b) => a.latitude.length - b.latitude.length,
+      sorter: (a, b) => a.latitude - b.latitude,
       sortDirections: ["descend", "ascend"],
       width: 100,
     },
@@ -266,7 +267,7 @@ export const TableComponent = () => {
       title: "Longitude",
       dataIndex: "longitude",
       key: "longitude",
-      sorter: (a, b) => a.longitude.length - b.longitude.length,
+      sorter: (a, b) => a.longitude - b.longitude,
       sortDirections: ["descend", "ascend"],
       width: 100,
     },
@@ -278,13 +279,12 @@ export const TableComponent = () => {
     },
   ];
   return (
-    <div className="h-screen">
+    <div style={{ height: "100vh" }}>
       <Table
         columns={columns}
         dataSource={data}
         scroll={{
-          x: 1500,
-          y: 300,
+          x: 1600,
         }}
       />
     </div>

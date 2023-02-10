@@ -1,37 +1,50 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Joe Black",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Jim Green",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
+
+import GJSON from "../../Data/Poi.json";
+
+// const data = [];
+// for (let i = 0; i < 100; i++) {
+//   data.push({
+//     key: i,
+//     name: `Edrward ${i}`,
+//     age: 32,
+//     address: `London Park no. ${i}`,
+//   });
+// }
+
 export const TableComponent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [data, setData] = useState([]);
   const searchInput = useRef(null);
+
+  useEffect(() => {
+    const data = [];
+    GJSON.features.map((item) => {
+      data.push({
+        key: item.properties["OBJECTID"],
+        name: item.properties["NAME"],
+        typeCode: item.properties["TYPECODE"],
+        cityOwned: item.properties["CITYOWNED"],
+        sVMap: item.properties["S_V_MAP"],
+        webMap: item.properties["WEB_MAP"],
+        webLink: item.properties["WEB_LINK"],
+        gPin: item.properties["GPIN"],
+        address: item.properties["ADDRESS"],
+        notes: item.properties["NOTES"],
+        spX: item.properties["SP_X"],
+        spY: item.properties["SP_Y"],
+        latitude: item.properties["LATITUDE"],
+        longitude: item.properties["LONGITUDE"],
+        mcBldgnmbr: item.properties["MCBLDGNUMBER"],
+      });
+    });
+    setData(data);
+  }, []);
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -148,10 +161,11 @@ export const TableComponent = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: 100,
       ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ["descend", "ascend"],
+      fixed: "left",
     },
     {
       title: "Type Code",
@@ -161,6 +175,8 @@ export const TableComponent = () => {
         { text: "A", value: "A" },
         { text: "B", value: "B" },
       ],
+      fixed: "left",
+      width: 100,
     },
     {
       title: "City Owned",
@@ -170,6 +186,7 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      width: 100,
     },
     {
       title: "S_V_MAP",
@@ -179,6 +196,7 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      width: 100,
     },
     {
       title: "WEB_MAP",
@@ -188,16 +206,19 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      width: 100,
     },
     {
       title: "Web Link",
       dataIndex: "webLink",
       key: "webLink",
+      width: 100,
     },
     {
       title: "GPIN",
       dataIndex: "gPin",
       key: "gPin",
+      width: 100,
     },
     {
       title: "Address",
@@ -206,6 +227,7 @@ export const TableComponent = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "Notes",
@@ -214,6 +236,7 @@ export const TableComponent = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.notes.length - b.notes.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "SP_X",
@@ -221,6 +244,7 @@ export const TableComponent = () => {
       key: "spX",
       sorter: (a, b) => a.spX.length - b.spX.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "SP_Y",
@@ -228,6 +252,7 @@ export const TableComponent = () => {
       key: "spY",
       sorter: (a, b) => a.spY.length - b.spY.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "Latitude",
@@ -235,6 +260,7 @@ export const TableComponent = () => {
       key: "latitude",
       sorter: (a, b) => a.latitude.length - b.latitude.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "Longitude",
@@ -242,12 +268,25 @@ export const TableComponent = () => {
       key: "longitude",
       sorter: (a, b) => a.longitude.length - b.longitude.length,
       sortDirections: ["descend", "ascend"],
+      width: 100,
     },
     {
       title: "MC_BLDGNMBR",
       dataIndex: "mcBldgnmbr",
       key: "mcBldgnmbr",
+      width: 100,
     },
   ];
-  return <Table columns={columns} dataSource={data} />;
+  return (
+    <div className="h-screen">
+      <Table
+        columns={columns}
+        dataSource={data}
+        scroll={{
+          x: 1500,
+          y: 300,
+        }}
+      />
+    </div>
+  );
 };

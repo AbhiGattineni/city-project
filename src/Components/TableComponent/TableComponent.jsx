@@ -18,12 +18,18 @@ import GJSON from "../../Data/Poi.json";
 export const TableComponent = () => {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [typeCode, setTypeCode] = useState([]);
   const [data, setData] = useState([]);
   const searchInput = useRef(null);
 
   useEffect(() => {
     const data = [];
+    const typeCode = [];
+
     GJSON.features.map((item) => {
+      if (!typeCode.includes(item.properties["TYPECODE"])) {
+        typeCode.push(item.properties["TYPECODE"]);
+      }
       data.push({
         key: item.properties["OBJECTID"],
         name: item.properties["NAME"],
@@ -43,7 +49,9 @@ export const TableComponent = () => {
         mcBldgnmbr: item.properties["MCBLDGNUMBER"],
       });
     });
+    console.log(typeCode);
     setData(data);
+    setTypeCode(typeCode);
   }, []);
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -162,21 +170,20 @@ export const TableComponent = () => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: 200,
       ...getColumnSearchProps("name"),
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ["descend", "ascend"],
       fixed: "left",
+      width: 300,
     },
     {
       title: "Type Code",
       dataIndex: "typeCode",
       key: "typeCode",
       filters: [
-        { text: "A", value: "A" },
-        { text: "B", value: "B" },
+        { text: "Yes", value: "Yes" },
+        { text: "No", value: "No" },
       ],
-      fixed: "left",
       width: 100,
     },
     {
@@ -187,6 +194,7 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      onFilter: (value, record) => record.cityOwned.includes(value),
       width: 100,
     },
     {
@@ -197,6 +205,7 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      onFilter: (value, record) => record.sVMap.includes(value),
       width: 100,
     },
     {
@@ -207,6 +216,7 @@ export const TableComponent = () => {
         { text: "Yes", value: "Yes" },
         { text: "No", value: "No" },
       ],
+      onFilter: (value, record) => record.webMap.includes(value),
       width: 100,
     },
     {
@@ -228,7 +238,7 @@ export const TableComponent = () => {
       ...getColumnSearchProps("address"),
       sorter: (a, b) => a.address.length - b.address.length,
       sortDirections: ["descend", "ascend"],
-      width: 200,
+      width: 300,
     },
     {
       title: "Notes",
@@ -245,7 +255,7 @@ export const TableComponent = () => {
       key: "spX",
       sorter: (a, b) => a.spX - b.spX,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 150,
     },
     {
       title: "SP_Y",
@@ -253,7 +263,7 @@ export const TableComponent = () => {
       key: "spY",
       sorter: (a, b) => a.spY - b.spY,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 150,
     },
     {
       title: "Latitude",
@@ -261,7 +271,7 @@ export const TableComponent = () => {
       key: "latitude",
       sorter: (a, b) => a.latitude - b.latitude,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 125,
     },
     {
       title: "Longitude",
@@ -269,7 +279,7 @@ export const TableComponent = () => {
       key: "longitude",
       sorter: (a, b) => a.longitude - b.longitude,
       sortDirections: ["descend", "ascend"],
-      width: 100,
+      width: 125,
     },
     {
       title: "MC_BLDGNMBR",
@@ -280,13 +290,7 @@ export const TableComponent = () => {
   ];
   return (
     <div style={{ height: "100vh" }}>
-      <Table
-        columns={columns}
-        dataSource={data}
-        scroll={{
-          x: 1600,
-        }}
-      />
+      <Table columns={columns} dataSource={data} scroll={{ x: 2450 }} />
     </div>
   );
 };

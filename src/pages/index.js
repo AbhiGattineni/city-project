@@ -14,6 +14,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/vblogo.ico" />
       </Head>
+      <h2 className="map-h2">City Of Virginia Beach</h2>
+      <div class="map-h2">
+        <div>Table</div>
+        <div>Map</div>
+      </div>
       <TableComponent />
       <GoogleMapComponent />
     </div>

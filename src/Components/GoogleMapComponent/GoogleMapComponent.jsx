@@ -1,14 +1,12 @@
+import React from "react";
 import GoogleMapReact from "google-map-react";
 
 import { LocationPin } from "../LocationPin/LocationPin";
 import CityData from "../../Data/Poi.json";
 
 export const GoogleMapComponent = () => {
-  const firstFive = CityData.features.slice(0, 20);
   return (
     <div className="map">
-      <h2 className="map-h2">City Of Virginia Beach</h2>
-
       <div className="google-map">
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyAtM-jn7A0XVb_WPibPltWwRsAF2lUWOhw" }}
@@ -16,10 +14,10 @@ export const GoogleMapComponent = () => {
             lat: 36.86314,
             lng: -76.015778,
           }}
-          zoom={10}
+          zoom={13}
           yesIWantToUseGoogleMapApiInternals
         >
-          {firstFive.map((item) => {
+          {CityData.features.map((item) => {
             return (
               <LocationPin
                 key={item.properties["OBJECTID"]}

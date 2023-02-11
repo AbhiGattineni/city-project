@@ -6,7 +6,7 @@ import CityData from "../../Data/Poi.json";
 
 export const GoogleMapComponent = () => {
   return (
-    <div className="map">
+    <div className="mt-3">
       <div className="google-map">
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyAtM-jn7A0XVb_WPibPltWwRsAF2lUWOhw" }}

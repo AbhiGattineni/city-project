@@ -11,6 +11,7 @@ import { CityOwnedComponent } from "../CityOwnedComponent/CityOwnedComponent";
 export const GoogleMapComponent = () => {
   const [displaySelectedData, setdisplaySelectedData] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [opacity, setOpacity] = useState(1);
   const [selectedDropdown, setSelectedDropdown] = useState({
     label: "ALL",
     shortlabel: "ALL",
@@ -30,36 +31,45 @@ export const GoogleMapComponent = () => {
     console.log(selectedDropdown.shortlabel === "ALL" && cityOwned === "All");
     CityData.features.map((item) => {
       if (selectedDropdown.shortlabel === "ALL" && cityOwned === "All") {
-        selectedData.push(item.properties);
+        selectedData.push(item);
       } else if (
         selectedDropdown.shortlabel === "ALL" &&
         cityOwned === item.properties["CITY_OWNED"]
       ) {
-        selectedData.push(item.properties);
+        selectedData.push(item);
       } else if (
         selectedDropdown.shortlabel === item.properties["TYPECODE"] &&
         cityOwned === "All"
       ) {
-        selectedData.push(item.properties);
+        selectedData.push(item);
       } else if (
         selectedDropdown.shortlabel === item.properties["TYPECODE"] &&
         cityOwned === item.properties["CITY_OWNED"]
       ) {
-        selectedData.push(item.properties);
+        selectedData.push(item);
       }
     });
     setdisplaySelectedData(selectedData);
   }, [selectedDropdown, cityOwned]);
 
+  const handleDrag = () => {
+    setLoaded(false);
+    setTimeout(function () {
+      setLoaded(true);
+    }, 1000);
+  };
+
   return (
     <div className="">
-      <div className="google-map">
+      <div className="google-map ">
+        {!loaded && <Loading className="place-self-center" />}
         <div className="grid grid-cols-2  justify-items-center m-2 md:m-3">
           <PropertyDropdown
             setSelectedDropdown={(e) => setSelectedDropdown(e)}
           />
           <CityOwnedComponent setCityOwned={(e) => setCityOwned(e)} />
         </div>
+
         <GoogleMapReact
           bootstrapURLKeys={{ key: "" }}
           center={{
@@ -67,21 +77,21 @@ export const GoogleMapComponent = () => {
             lng: -76.015778,
           }}
           zoom={10}
+          onDrag={handleDrag}
+          onZoomAnimationStart={handleDrag}
         >
-          {loaded ? (
+          {loaded &&
             displaySelectedData.map((item) => {
               return (
                 <LocationPin
-                  key={item["OBJECTID"]}
-                  lat={item["LATITUDE"]}
-                  lng={item["LONGITUDE"]}
-                  text={item["NAME"]}
+                  key={item.properties["OBJECTID"]}
+                  lat={item.geometry.coordinates[1]}
+                  lng={item.geometry.coordinates[0]}
+                  text={item.properties["NAME"]}
+                  style={opacity}
                 />
               );
-            })
-          ) : (
-            <Loading lat={"36.86314"} lng={"-76.015778"} />
-          )}
+            })}
         </GoogleMapReact>
       </div>
     </div>

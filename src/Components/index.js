@@ -3,3 +3,5 @@ export { GoogleMapComponent } from "./GoogleMapComponent/GoogleMapComponent";
 export { LocationPin } from "./LocationPin/LocationPin";
 export { ChartComponent } from "./ChartComponent/ChartComponent";
 export { PropertyDropdown } from "./PropertyDropdown/PropertyDropdown";
+export { SwitchComponent } from "./SwitchComponent/SwitchComponent";
+export { DropdownComponent } from "./DropdownComponent/DropdownComponent";

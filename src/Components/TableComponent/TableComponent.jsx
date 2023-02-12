@@ -2,6 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Button, Input, Space, Table } from "antd";
 import { useEffect, useRef, useState } from "react";
 import Highlighter from "react-highlight-words";
+import { Loading } from "..";
 
 import GJSON from "../../Data/Poi.json";
 
@@ -20,12 +21,15 @@ export const TableComponent = () => {
   const [searchedColumn, setSearchedColumn] = useState("");
   const [typeCode, setTypeCode] = useState([]);
   const [data, setData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const searchInput = useRef(null);
 
   useEffect(() => {
+    fetchData();
+  }, []);
+  async function fetchData() {
     const data = [];
     const typeCode = [];
-
     GJSON.features.map((item) => {
       if (!typeCode.includes(item.properties["TYPECODE"])) {
         typeCode.push(item.properties["TYPECODE"]);
@@ -49,9 +53,10 @@ export const TableComponent = () => {
         mcBldgnmbr: item.properties["MCBLDGNUMBER"],
       });
     });
-    setData(data);
+    await setData(data);
+    setLoaded(true);
     setTypeCode(typeCode);
-  }, []);
+  }
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -288,8 +293,16 @@ export const TableComponent = () => {
     },
   ];
   return (
-    <div style={{ height: "100vh" }}>
-      <Table columns={columns} dataSource={data} scroll={{ x: 2450 }} />
+    <div className="grid justify-items-center">
+      {loaded ? (
+        <div style={{ height: "100vh" }}>
+          <Table columns={columns} dataSource={data} scroll={{ x: 2450 }} />
+        </div>
+      ) : (
+        <div className="place-self-center">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };

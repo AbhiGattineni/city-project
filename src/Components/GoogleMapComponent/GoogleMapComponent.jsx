@@ -20,8 +20,13 @@ export const GoogleMapComponent = () => {
   const [cityOwned, setCityOwned] = useState("All");
 
   useEffect(() => {
+    setTimeout(function () {
+      setLoaded(true);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
     let selectedData = [];
-    setLoaded(false);
     console.log(selectedDropdown.shortlabel === "ALL" && cityOwned === "All");
     CityData.features.map((item) => {
       if (selectedDropdown.shortlabel === "ALL" && cityOwned === "All") {
@@ -44,7 +49,6 @@ export const GoogleMapComponent = () => {
       }
     });
     setdisplaySelectedData(selectedData);
-    setLoaded(true);
   }, [selectedDropdown, cityOwned]);
 
   return (

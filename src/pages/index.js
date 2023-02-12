@@ -2,7 +2,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { Inter } from "@next/font/google";
 
-import { GoogleMapComponent, TableComponent } from "@/Components";
+import {
+  GoogleMapComponent,
+  TableComponent,
+  ChartComponent,
+} from "@/Components";
 import { useState } from "react";
 
 export default function Home() {
@@ -12,9 +16,12 @@ export default function Home() {
     if (e.target.innerText === "Table") {
       setActive(<TableComponent />);
       setTab("Table");
-    } else {
+    } else if (e.target.innerText === "Map") {
       setActive(<GoogleMapComponent />);
       setTab("Map");
+    } else if (e.target.innerText === "Chart") {
+      setActive(<ChartComponent />);
+      setTab("Chart");
     }
   };
   return (

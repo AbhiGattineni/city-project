@@ -1,47 +1,56 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
+
+import { UserOutlined } from "@ant-design/icons";
 
 import { LocationPin } from "../LocationPin/LocationPin";
 import CityData from "../../Data/Poi.json";
-import { PropertyDropdown } from "..";
+import { PropertyDropdown, SwitchComponent } from "..";
+import { CityOwnedComponent } from "../CityOwnedComponent/CityOwnedComponent";
 
 export const GoogleMapComponent = () => {
-  const [displaySelectedData, setdisplaySelectedData] = React.useState([]);
-  const [selectedDropdown, setSelectedDropdown] = React.useState([]);
-
-  useEffect(() => {
-    let allData = [];
-    CityData.features.map((item) => allData.push(item.properties));
-    setdisplaySelectedData(allData);
-  }, []);
+  const [displaySelectedData, setdisplaySelectedData] = useState([]);
+  const [selectedDropdown, setSelectedDropdown] = useState({
+    label: "All",
+    shortlabel: "All",
+    key: 0,
+    icon: <UserOutlined />,
+  });
+  const [cityOwned, setCityOwned] = useState("All");
 
   useEffect(() => {
     let selectedData = [];
-    console.log(selectedDropdown.shortlabel === "ALL");
-    console.log(selectedDropdown.length === 0);
-    if (
-      selectedDropdown.shortlabel === "ALL" ||
-      selectedDropdown.length === 0
-    ) {
-      CityData.features.map((item) => selectedData.push(item.properties));
-    } else {
-      CityData.features.map((item) => {
-        if (item.properties["TYPECODE"] === selectedDropdown.shortlabel) {
-          selectedData.push(item.properties);
-        }
-      });
-    }
+    CityData.features.map((item) => {
+      if (selectedDropdown.shortlabel === "All" && cityOwned === "All") {
+        selectedData.push(item.properties);
+      } else if (
+        selectedDropdown.shortlabel === "All" &&
+        cityOwned === item.properties["CITY_OWNED"]
+      ) {
+        selectedData.push(item.properties);
+      } else if (
+        selectedDropdown.shortlabel === item.properties["TYPECODE"] &&
+        cityOwned === "All"
+      ) {
+        selectedData.push(item.properties);
+      } else if (
+        selectedDropdown.shortlabel === item.properties["TYPECODE"] &&
+        cityOwned === item.properties["CITY_OWNED"]
+      ) {
+        selectedData.push(item.properties);
+      }
+    });
     setdisplaySelectedData(selectedData);
-  }, [selectedDropdown]);
+  }, [selectedDropdown, cityOwned]);
 
   return (
-    <div className="mt-3">
+    <div className="">
       <div className="google-map">
-        <div className="grid grid-cols-2 md:grid-cols-6 justify-items-center my-3">
+        <div className="grid grid-cols-2  justify-items-center m-2 md:m-3">
           <PropertyDropdown
             setSelectedDropdown={(e) => setSelectedDropdown(e)}
           />
-          <div>This is Toggle Componenet</div>
+          <CityOwnedComponent setCityOwned={(e) => setCityOwned(e)} />
         </div>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "" }}

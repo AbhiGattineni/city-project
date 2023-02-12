@@ -31,40 +31,51 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/vblogo.ico" />
       </Head>
-      <h2 className="text-2xl font-bold text-center mb-3 bg-gray-300 rounded py-2">
-        City Of Virginia Beach
-      </h2>
-      <div className="grid justify-items-center">
-        <div className="grid grid-cols-3 m-3">
-          <div
-            className={
-              tab === "Table"
-                ? "text-xl mx-3  border-2 border-slate-500 rounded-lg px-2"
-                : "text-xl mx-3 cursor-pointer p-2"
-            }
-            onClick={handleClick}
-          >
-            Table
+      <div className="grid  sm:grid-cols-2  bg-gray-300 rounded py-5">
+        <div className="grid grid-cols-5 place-self-center sm:place-self-start  ml-3">
+          <Image
+            src="/icon.ico"
+            alt="Logo"
+            width={50}
+            height={50}
+            className="col-span-1"
+          />
+          <div className="text-2xl font-bold text-center col-span-4">
+            City Of Virginia Beach
           </div>
-          <div
-            className={
-              tab === "Map"
-                ? "text-xl mx-3  border-2 border-slate-500 rounded-lg px-2"
-                : "text-xl mx-3 cursor-pointer p-2"
-            }
-            onClick={handleClick}
-          >
-            Map
-          </div>
-          <div
-            className={
-              tab === "Chart"
-                ? "text-xl mx-3  border-2 border-slate-500 rounded-lg p-2"
-                : "text-xl mx-3 cursor-pointer p-2"
-            }
-            onClick={handleClick}
-          >
-            Chart
+        </div>
+        <div className="grid justify-items-stretch my-5 sm:my-0">
+          <div className="grid grid-cols-3">
+            <div
+              className={
+                tab === "Table"
+                  ? "text-xl mx-3  border-b-2 border-slate-500 text-center"
+                  : "text-xl mx-3 cursor-pointer  text-center"
+              }
+              onClick={handleClick}
+            >
+              Table
+            </div>
+            <div
+              className={
+                tab === "Map"
+                  ? "text-xl mx-3  border-b-2 border-slate-500 text-center"
+                  : "text-xl mx-3 cursor-pointer  text-center"
+              }
+              onClick={handleClick}
+            >
+              Map
+            </div>
+            <div
+              className={
+                tab === "Chart"
+                  ? "text-xl mx-3 border-b-2 border-slate-500 text-center"
+                  : "text-xl mx-3 cursor-pointer text-center"
+              }
+              onClick={handleClick}
+            >
+              Chart
+            </div>
           </div>
         </div>
       </div>

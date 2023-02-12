@@ -3,6 +3,7 @@ import { DownOutlined, UserOutlined } from "@ant-design/icons";
 
 import DropdownData from "../../Data/Type.json";
 import { useEffect, useState } from "react";
+import { DropdownComponent } from "..";
 
 export const PropertyDropdown = ({ setSelectedDropdown }) => {
   const [dropdownData, setDropdownData] = useState([]);
@@ -28,16 +29,5 @@ export const PropertyDropdown = ({ setSelectedDropdown }) => {
     items: dropdownData,
     onClick: handleMenuClick,
   };
-  return (
-    <div className="">
-      <Dropdown menu={menuProps}>
-        <Button>
-          <Space>
-            {label}
-            <DownOutlined />
-          </Space>
-        </Button>
-      </Dropdown>
-    </div>
-  );
+  return <DropdownComponent menuProps={menuProps} label={label} />;
 };

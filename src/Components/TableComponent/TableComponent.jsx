@@ -5,6 +5,7 @@ import Highlighter from "react-highlight-words";
 import { Loading } from "..";
 
 import GJSON from "../../Data/Poi.json";
+import Types from "../../Data/Type.json";
 
 // const data = [];
 // for (let i = 0; i < 100; i++) {
@@ -25,7 +26,16 @@ export const TableComponent = () => {
   const searchInput = useRef(null);
 
   useEffect(() => {
+    let typesObject = [];
     fetchData();
+    Object.keys(Types).map((item, index) => {
+      typesObject.push({
+        text: Types[item],
+        value: item,
+      });
+    });
+    console.log(typesObject);
+    setTypeCode(typesObject);
   }, []);
   async function fetchData() {
     const data = [];
@@ -55,7 +65,6 @@ export const TableComponent = () => {
     });
     await setData(data);
     setLoaded(true);
-    setTypeCode(typeCode);
   }
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -184,10 +193,7 @@ export const TableComponent = () => {
       title: "Type Code",
       dataIndex: "typeCode",
       key: "typeCode",
-      filters: [
-        { text: "Yes", value: "Yes" },
-        { text: "No", value: "No" },
-      ],
+      filters: typeCode,
       width: 100,
     },
     {

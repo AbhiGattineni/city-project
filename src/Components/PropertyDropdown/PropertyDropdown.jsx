@@ -28,6 +28,10 @@ export const PropertyDropdown = ({ setSelectedDropdown }) => {
   const menuProps = {
     items: dropdownData,
     onClick: handleMenuClick,
+    style: {
+      height: "300px",
+      overflowY: "scroll",
+    },
   };
   return <DropdownComponent menuProps={menuProps} label={label} />;
 };

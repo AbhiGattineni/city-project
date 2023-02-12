@@ -1,5 +1,10 @@
-import { CityOwnedPieChart } from "..";
+import { CityOwnedPieChart, SectionsPieChart } from "..";
 
 export const ChartComponent = () => {
-  return <CityOwnedPieChart />;
+  return (
+    <div className="grid grid-rows-2 sm:grid-cols-2">
+      <CityOwnedPieChart />
+      <SectionsPieChart />
+    </div>
+  );
 };

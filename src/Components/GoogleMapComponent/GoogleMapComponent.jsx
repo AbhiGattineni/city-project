@@ -44,9 +44,9 @@ export const GoogleMapComponent = () => {
   }, [selectedDropdown, cityOwned]);
 
   return (
-    <div className="mt-3">
+    <div className="">
       <div className="google-map">
-        <div className="grid grid-cols-2 md:grid-cols-6 justify-items-center my-3">
+        <div className="grid grid-cols-2  justify-items-center m-2 md:m-3">
           <PropertyDropdown
             setSelectedDropdown={(e) => setSelectedDropdown(e)}
           />

@@ -5,14 +5,15 @@ import { UserOutlined } from "@ant-design/icons";
 
 import { LocationPin } from "../LocationPin/LocationPin";
 import CityData from "../../Data/Poi.json";
-import { PropertyDropdown, SwitchComponent } from "..";
+import { Loading, PropertyDropdown, SwitchComponent } from "..";
 import { CityOwnedComponent } from "../CityOwnedComponent/CityOwnedComponent";
 
 export const GoogleMapComponent = () => {
   const [displaySelectedData, setdisplaySelectedData] = useState([]);
+  const [loaded, setLoaded] = useState(false);
   const [selectedDropdown, setSelectedDropdown] = useState({
-    label: "All",
-    shortlabel: "All",
+    label: "ALL",
+    shortlabel: "ALL",
     key: 0,
     icon: <UserOutlined />,
   });
@@ -20,11 +21,13 @@ export const GoogleMapComponent = () => {
 
   useEffect(() => {
     let selectedData = [];
+    setLoaded(false);
+    console.log(selectedDropdown.shortlabel === "ALL" && cityOwned === "All");
     CityData.features.map((item) => {
-      if (selectedDropdown.shortlabel === "All" && cityOwned === "All") {
+      if (selectedDropdown.shortlabel === "ALL" && cityOwned === "All") {
         selectedData.push(item.properties);
       } else if (
-        selectedDropdown.shortlabel === "All" &&
+        selectedDropdown.shortlabel === "ALL" &&
         cityOwned === item.properties["CITY_OWNED"]
       ) {
         selectedData.push(item.properties);
@@ -41,6 +44,7 @@ export const GoogleMapComponent = () => {
       }
     });
     setdisplaySelectedData(selectedData);
+    setLoaded(true);
   }, [selectedDropdown, cityOwned]);
 
   return (
@@ -59,18 +63,21 @@ export const GoogleMapComponent = () => {
             lng: -76.015778,
           }}
           zoom={10}
-          yesIWantToUseGoogleMapApiInternals
         >
-          {displaySelectedData.map((item) => {
-            return (
-              <LocationPin
-                key={item["OBJECTID"]}
-                lat={item["LATITUDE"]}
-                lng={item["LONGITUDE"]}
-                text={item["NAME"]}
-              />
-            );
-          })}
+          {loaded ? (
+            displaySelectedData.map((item) => {
+              return (
+                <LocationPin
+                  key={item["OBJECTID"]}
+                  lat={item["LATITUDE"]}
+                  lng={item["LONGITUDE"]}
+                  text={item["NAME"]}
+                />
+              );
+            })
+          ) : (
+            <Loading lat={"36.86314"} lng={"-76.015778"} />
+          )}
         </GoogleMapReact>
       </div>
     </div>

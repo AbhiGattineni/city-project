@@ -187,7 +187,7 @@ export const TableComponent = () => {
       sorter: (a, b) => a.name.length - b.name.length,
       sortDirections: ["descend", "ascend"],
       fixed: "left",
-      width: 300,
+      width: 200,
     },
     {
       title: "Type Code",

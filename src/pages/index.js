@@ -1,85 +1,107 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
+import { Layout, Menu, Icon, Row, Col, Typography } from "antd";
+import {
+  AppstoreOutlined,
+  MailOutlined,
+  TableOutlined,
+  PieChartOutlined,
+} from "@ant-design/icons";
 
 import {
   GoogleMapComponent,
   TableComponent,
   ChartComponent,
 } from "@/Components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const { Header } = Layout;
+
+const items = [
+  {
+    label: "Table",
+    key: "0",
+    icon: <TableOutlined />,
+    component: <TableComponent />,
+  },
+  {
+    label: "Map",
+    key: "1",
+    icon: <AppstoreOutlined />,
+    component: <GoogleMapComponent />,
+  },
+
+  {
+    label: "Chart",
+    key: "2",
+    icon: <PieChartOutlined />,
+    component: <ChartComponent />,
+  },
+];
 
 export default function Home() {
   const [active, setActive] = useState(<TableComponent />);
-  const [tab, setTab] = useState("Table");
-  const handleClick = (e) => {
-    if (e.target.innerText === "Table") {
-      setActive(<TableComponent />);
-      setTab("Table");
-    } else if (e.target.innerText === "Map") {
-      setActive(<GoogleMapComponent />);
-      setTab("Map");
-    } else if (e.target.innerText === "Chart") {
-      setActive(<ChartComponent />);
-      setTab("Chart");
-    }
+  const [width, setWidth] = useState();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const onClick = (e) => {
+    setActive(items[e].component);
+    setCurrent(e);
   };
   return (
-    <div style={{ height: "100vh" }}>
+    <Layout>
       <Head>
         <title>City Project</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/vblogo.ico" />
       </Head>
-      <div className="grid  sm:grid-cols-2  bg-gray-300 rounded py-5">
-        <div className="grid grid-cols-5 place-self-center sm:place-self-start  ml-3">
-          <Image
-            src="/icon.ico"
-            alt="Logo"
-            width={50}
-            height={50}
-            className="col-span-1"
-          />
-          <div className="text-2xl font-bold text-center col-span-4">
-            City Of Virginia Beach
-          </div>
-        </div>
-        <div className="grid justify-items-stretch my-5 sm:my-0">
-          <div className="grid grid-cols-3">
-            <div
-              className={
-                tab === "Table"
-                  ? "text-xl mx-3  border-b-2 border-slate-500 text-center"
-                  : "text-xl mx-3 cursor-pointer  text-center"
-              }
-              onClick={handleClick}
-            >
-              Table
-            </div>
-            <div
-              className={
-                tab === "Map"
-                  ? "text-xl mx-3  border-b-2 border-slate-500 text-center"
-                  : "text-xl mx-3 cursor-pointer  text-center"
-              }
-              onClick={handleClick}
-            >
-              Map
-            </div>
-            <div
-              className={
-                tab === "Chart"
-                  ? "text-xl mx-3 border-b-2 border-slate-500 text-center"
-                  : "text-xl mx-3 cursor-pointer text-center"
-              }
-              onClick={handleClick}
-            >
-              Chart
-            </div>
-          </div>
-        </div>
-      </div>
+      <Row>
+        <Row xs={24} sm={12}>
+          <Col flex={1}>
+            <Image src="/icon.ico" alt="Logo" width={40} height={40} />
+          </Col>
+          <Col flex={3} style={{ marginLeft: "20px" }}>
+            <span style={{ fontSize: "25px", color: "black", fontWeight: 700 }}>
+              City Of Virginia Beach
+            </span>
+          </Col>
+        </Row>
+        <Col xs={24} sm={12}>
+          <Row justify={width < 576 ? "center" : "end"}>
+            {items.map((item) => (
+              <Col key={item.key} onClick={() => onClick(item.key)}>
+                <Typography.Text
+                  strong={item.key === current}
+                  style={{ cursor: "pointer" }}
+                >
+                  {item.icon}
+                  <Typography.Text
+                    style={{
+                      fontSize: "20px",
+                      padding: "10px",
+                      color:
+                        item.key === current
+                          ? "#1890ff"
+                          : "rgba(0, 0, 0, 0.65)",
+                    }}
+                  >
+                    {item.label}
+                  </Typography.Text>
+                </Typography.Text>
+              </Col>
+            ))}
+          </Row>
+        </Col>
+      </Row>
+
       {active}
-    </div>
+    </Layout>
   );
 }

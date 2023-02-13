@@ -7,6 +7,7 @@ import { LocationPin } from "../LocationPin/LocationPin";
 import CityData from "../../Data/Poi.json";
 import { Loading, PropertyDropdown, SwitchComponent } from "..";
 import { CityOwnedComponent } from "../CityOwnedComponent/CityOwnedComponent";
+import { Row, Col } from "antd";
 
 export const GoogleMapComponent = () => {
   const [displaySelectedData, setdisplaySelectedData] = useState([]);
@@ -61,14 +62,18 @@ export const GoogleMapComponent = () => {
 
   return (
     <div className="">
-      <div className="google-map ">
-        {!loaded && <Loading className="place-self-center" />}
-        <div className="grid grid-cols-2  justify-items-center m-2 md:m-3">
-          <PropertyDropdown
-            setSelectedDropdown={(e) => setSelectedDropdown(e)}
-          />
-          <CityOwnedComponent setCityOwned={(e) => setCityOwned(e)} />
-        </div>
+      <div style={{ width: "100%", height: "80vh" }}>
+        {!loaded && <Loading className="" />}
+        <Row justify="center" gutter={16} style={{ margin: "10px" }}>
+          <Col span={8}>
+            <CityOwnedComponent setCityOwned={(e) => setCityOwned(e)} />
+          </Col>
+          <Col span={8}>
+            <PropertyDropdown
+              setSelectedDropdown={(e) => setSelectedDropdown(e)}
+            />
+          </Col>
+        </Row>
 
         <GoogleMapReact
           bootstrapURLKeys={{ key: "" }}
